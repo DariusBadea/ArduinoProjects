@@ -1,0 +1,54 @@
+import pyfirmata
+import time
+from pyfirmata import Arduino, util, SERVO
+
+# setting up the connection through COM3 port
+# may be different port for you
+board = Arduino("COM3")
+
+# initialize an itterator
+it = util.Iterator(board)
+it.start()
+
+# define pins + the servo 
+left_pin = board.get_pin("a:3:i")
+mid_pin = board.get_pin("a:4:i")
+right_pin = board.get_pin("a:5:i")
+board.digital[2].mode = SERVO
+
+
+# function to determine the position of the light source
+# compares the values returned by the three photoresistors
+def compare(left_val,mid_val,right_val):
+    if (left_val > mid_val and left_val > right_val):
+        if (left_val - mid_val > 0.2): # you need to change the 0.2 value to match your project. I found 0.2 by experimentation
+            print("-------------------- LEFT -----------------")
+            return 15
+        else:
+            print("-------------------- MID-LEFT -----------------")
+            return 65
+    elif (mid_val > left_val and mid_val > right_val):
+        print("-------------------- MID -----------------")
+        return 90
+    else: 
+        if (right_val - mid_val > 0.2):
+            print("-------------------- RIGHT -----------------")
+            return 150
+        else:
+            print("-------------------- MID-RIGHT -----------------")
+            return 120
+
+
+# actual engine
+for i in range(1000):
+    print("left  " + str(left_pin.read()) + "      mid   " + str(mid_pin.read()) + "      right " + str(right_pin.read()))
+    
+    if (left_pin.read() != None and mid_pin.read() != None and right_pin.read() != None   ): # first results are NONE so you need to make sure you compare floats, not NONES
+        left_val = left_pin.read()
+        mid_val = mid_pin.read()
+        right_val = right_pin.read()
+        board.digital[2].write(compare(left_val, mid_val,right_val)) 
+        
+    time.sleep(0.1)
+
+
