@@ -1,0 +1,44 @@
+// declare the pins
+int buzz = 8;
+int high_note;
+int med_note;
+int low_note;
+
+
+
+void setup() {
+  // define pins type
+pinMode(buzz, OUTPUT);
+pinMode(A3, INPUT);
+pinMode(A5, INPUT);
+pinMode(A0, INPUT);
+Serial.begin(9600);
+}
+
+void loop() {
+//reads the input from pgotoresistors
+
+  high_note=analogRead(A3);
+  med_note=analogRead(A5);
+  low_note=analogRead(A0);
+
+// checks which photoresistor is lighted / which tone to play
+  if (high_note > 500)
+    {digitalWrite(buzz, HIGH);
+    delayMicroseconds(800);
+    digitalWrite(buzz, LOW);
+    delayMicroseconds(800);}
+    
+  else if (med_note > 500)
+    {digitalWrite(buzz, HIGH);
+    delayMicroseconds(900);
+    digitalWrite(buzz, LOW);
+    delayMicroseconds(900);}
+    
+  else if (low_note > 500)
+    {digitalWrite(buzz, HIGH);
+    delay(1);
+    digitalWrite(buzz, LOW);
+    delay(1);}
+   
+}
