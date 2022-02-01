@@ -50,5 +50,3 @@ for i in range(1000):
         board.digital[2].write(compare(left_val, mid_val,right_val)) 
         
     time.sleep(0.1)
-
-
