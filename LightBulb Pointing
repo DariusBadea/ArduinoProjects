@@ -1,0 +1,133 @@
+#include <Servo.h>
+
+//declare the pins
+int servoPin=12;
+int rPin1=2;
+int rPin2=3;
+int rPin3=4;
+int yPin1=5;
+int yPin2=6;
+int yPin3=7;
+int gPin1=8;
+int gPin2=9;
+int gPin3=10;
+int servoPos;
+
+Servo x;
+
+
+void setup() {
+// set the pins type
+
+Serial.begin(9600);
+x.attach(servoPin);
+pinMode(rPin1,OUTPUT);
+pinMode(rPin2,OUTPUT);
+pinMode(rPin3,OUTPUT);
+pinMode(yPin1,OUTPUT);
+pinMode(yPin2,OUTPUT);
+pinMode(yPin3,OUTPUT);
+pinMode(gPin1,OUTPUT);
+pinMode(gPin2,OUTPUT);
+pinMode(gPin3,OUTPUT);
+
+}
+
+void loop() {
+  // servo is set from 10 to 160 / increments by 10 / LEDs light up accordingly
+int j;
+for( j=10; j<=160; j = j+10){
+x.write(j);
+delay(50);
+Serial.println(j);
+if (j == 10)
+{ digitalWrite(gPin3, HIGH);
+  delay(500);
+  digitalWrite(gPin3, LOW);
+}
+
+if (j == 30)
+{ digitalWrite(gPin2, HIGH);
+  delay(500);
+  digitalWrite(gPin2, LOW);
+}
+
+if (j == 60)
+{ digitalWrite(gPin1, HIGH);
+  delay(500);
+  digitalWrite(gPin1, LOW);
+}
+
+if (j == 80)
+{ digitalWrite(yPin3, HIGH);
+  delay(500);
+  digitalWrite(yPin3, LOW);
+}
+
+if (j == 90)
+{ digitalWrite(yPin2, HIGH);
+  delay(500);
+  digitalWrite(yPin2, LOW);
+}
+
+if (j == 110)
+{ digitalWrite(yPin1, HIGH);
+  delay(500);
+  digitalWrite(yPin1, LOW);
+}
+
+
+if (j == 130)
+{ digitalWrite(rPin3, HIGH);
+  delay(500);
+  digitalWrite(rPin3, LOW);
+}
+
+if (j == 140)
+{ digitalWrite(rPin2, HIGH);
+  delay(500);
+  digitalWrite(rPin2, LOW);
+}
+
+
+// servo reaches maximum width, returns to start and LEDs blink acordingly
+
+if (j == 160)
+{ digitalWrite(rPin1, HIGH);
+  delay(500);
+digitalWrite(rPin1, LOW);
+
+digitalWrite(rPin2, HIGH);
+delay(50);
+digitalWrite(rPin2, LOW);
+x.write(10);
+digitalWrite(rPin3, HIGH);
+delay(50);
+digitalWrite(rPin3, LOW);
+
+digitalWrite(yPin1, HIGH);
+delay(50);
+digitalWrite(yPin1, LOW);
+
+digitalWrite(yPin2, HIGH);
+delay(50);
+digitalWrite(yPin2, LOW);
+
+digitalWrite(yPin3, HIGH);
+delay(50);
+digitalWrite(yPin3, LOW);
+
+digitalWrite(gPin1, HIGH);
+delay(50);
+digitalWrite(gPin1, LOW);
+
+digitalWrite(gPin2, HIGH);
+delay(50);
+digitalWrite(gPin2, LOW);
+
+digitalWrite(gPin3, HIGH);
+}
+
+}
+
+}
