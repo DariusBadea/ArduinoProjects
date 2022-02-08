@@ -1,0 +1,125 @@
+// THESE ARE THE PINS
+#define C2 4
+#define D2 5
+#define E2 6
+#define F2 7
+#define G2 3
+#define A2 9
+#define B2 10
+
+/THESE ARE ALSO THE PINS, BUT +10 SO I KNOW THAT THE NOTES ARE ON THE LEFT SIDE OF C NOTE (Do)
+#define C1 14
+#define D1 15
+#define E1 16
+#define F1 17
+#define G1 13
+#define A1 19
+#define B1 20
+
+// PIN FOR THE YELLOW LED
+#define LOWER_NOTES 2
+
+// THESE ARE THE PITCHES FOR NOTES
+#define NOTE_B0  32
+#define NOTE_C1  33
+#define NOTE_D1  37
+#define NOTE_E1  41
+#define NOTE_F1  44
+#define NOTE_G1  49
+#define NOTE_A1  55
+#define NOTE_B1  62
+
+#define NOTE_C2  65
+#define NOTE_D2  73
+#define NOTE_E2  82
+#define NOTE_F2  87
+#define NOTE_G2  98
+#define NOTE_A2  110
+
+// THE ORDER OF THE NOTES IN THE MELODY
+// 0 IS PAUSE
+int melody[] = {
+
+     NOTE_G1, NOTE_G1, NOTE_D2, NOTE_D2, NOTE_E2, NOTE_E2, NOTE_D2,  
+  0, NOTE_C2, NOTE_C2, NOTE_B0, NOTE_B0, NOTE_A1, NOTE_A1, NOTE_G1,
+  0, NOTE_D2, NOTE_D2, NOTE_C2, NOTE_C2, NOTE_B0, NOTE_B0, NOTE_A1,
+  0, NOTE_D2, NOTE_D2, NOTE_C2, NOTE_C2, NOTE_B0, NOTE_B0, NOTE_A1,
+  0, NOTE_G1, NOTE_G1, NOTE_D2, NOTE_D2, NOTE_E2, NOTE_E2, NOTE_D2,  
+  0, NOTE_C2, NOTE_C2, NOTE_B0, NOTE_B0, NOTE_A1, NOTE_A1, NOTE_G1,
+
+   
+};
+
+// THESE IS THE ORDER OF THE LEDS ON/OFF
+// 8 IS FOR PAUSE ... DOESN'T TURN ON ANY LED
+int notes[] = {
+      G1, G1, D2, D2, E2, E2, D2,
+  8 , C2, C2, B1, B1, A1, A1, G1,
+  8 , D2, D2, C2, C2, B1, B1, A1,
+  8 , D2, D2, C2, C2, B1, B1, A1,
+  8 , G1, G1, D2, D2, E2, E2, D2,
+  8 , C2, C2, B1, B1, A1, A1, G1
+  
+  
+};
+
+// THE WAIT BETWEEN NOTES
+int noteDurations[] = {
+      2, 4, 2, 4, 2, 4, 2, 
+  4,  2, 4, 2, 4, 2, 4, 2, 
+  4,  2, 4, 2, 4, 2, 4, 2,
+  4,  2, 4, 2, 4, 2, 4, 2,
+  4,  2, 4, 2, 4, 2, 4, 2, 
+  4,  2, 4, 2, 4, 2, 4, 2, 
+};
+
+void setup() {
+ 
+  
+  pinMode(4, OUTPUT); pinMode(5, OUTPUT); pinMode(6, OUTPUT); pinMode(7, OUTPUT);
+  pinMode(3, OUTPUT); pinMode(9, OUTPUT); pinMode(10, OUTPUT); pinMode(LOWER_NOTES, OUTPUT);
+  
+
+  for (int thisNote = 0; thisNote < 47; thisNote++) {
+
+    int noteDuration = 1000 / noteDurations[thisNote];
+    bool lower = false;
+    int note = notes[thisNote];
+
+    // CHECKS IF NOTE IS ON THE LEFT SIDE OF C NOTE
+    if ( note > 10){
+      note = note - 10;
+      lower = true;
+      
+    }
+ 
+    digitalWrite(note, HIGH);
+    
+    // IF NOTE IS ON THE LEFT SIDE OF C NOTE, YELLOW LED TURNS ON
+    if ( lower == true){
+      digitalWrite(LOWER_NOTES, HIGH);
+      lower = false;
+    }
+
+    // ACTUAL BEEP
+    tone(13, melody[thisNote], noteDuration);
+    
+    int pauseBetweenNotes = noteDuration * 1.30;
+
+    // I HAD TO SPLIT THE WAITING TIME BETWEEN BEEPS SO THE LED COULD TURN OFF
+    // THIS WAY IT WON'T STAY ON BETWEEN BEEPS OF THE SAME NOTE => SHOWS 2 DIFFERENT BEEPS
+    delay(pauseBetweenNotes / 2);
+    digitalWrite(note, LOW);
+    digitalWrite(LOWER_NOTES, LOW);
+    delay(pauseBetweenNotes / 2);
+
+    //TURN OFF BEEP
+    noTone(13);
+
+  }
+}
+
+void loop() {
+
+  
+}
